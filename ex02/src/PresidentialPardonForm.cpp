@@ -16,13 +16,12 @@
 // Constructor
 PresidentialPardonForm::PresidentialPardonForm( const std::string& target )
   : AForm( "PresidentialPardonForm", PRESIDENTIAL_PARDON_SIGN,
-  PRESIDENTIAL_PARDON_EXEC ),
-  _target( target ) {}
+  PRESIDENTIAL_PARDON_EXEC ), _target( target ), _executed( false ) {}
 
 // Copy Constructor
 PresidentialPardonForm::PresidentialPardonForm(
   const PresidentialPardonForm& original )
-  : AForm( original ), _target( original._target ) {}
+  : AForm( original ), _target( original._target ), _executed( false ) {}
 
 // Assignment Constructor
 PresidentialPardonForm& PresidentialPardonForm::operator=(
@@ -30,6 +29,7 @@ PresidentialPardonForm& PresidentialPardonForm::operator=(
 {
   if ( this != &original ) {
     AForm::operator=( original );
+    _executed = original._executed;
   }
   return *this;
 }
@@ -39,6 +39,7 @@ PresidentialPardonForm::~PresidentialPardonForm() {}
 
 // Getters
 const std::string& PresidentialPardonForm::getTarget() const { return _target; }
+bool PresidentialPardonForm::getExecuted() const { return _executed; }
 
 // Methods
 void PresidentialPardonForm::executeAction() const
@@ -50,14 +51,21 @@ void PresidentialPardonForm::execute( const Bureaucrat& executor ) const
 {
   if ( !getSigned() )
     throw FormNotSignedException();
+  if ( getExecuted() )
+    throw FormAlreadyExecutedException();
   if ( executor.getGrade() > getExecGrade() )
     throw GradeTooLowException();
   executeAction();
+  _executed = true;
 }
 
 // Exception
 const char* PresidentialPardonForm::FormNotSignedException::what() const throw() {
   return "Form not signed.";
+}
+
+const char* PresidentialPardonForm::FormAlreadyExecutedException::what() const throw() {
+  return "Form already executed.";
 }
 
 // Overload insertion operator
@@ -67,6 +75,7 @@ std::ostream& operator<<( std::ostream& out, const PresidentialPardonForm& form 
       << ( form.getSigned() ? " is signed. " : " is not signed. " )
       << "Sign grade is " << form.getSignGrade() << ". "
       << "Execute grade is " << form.getExecGrade() << ". "
-      << "Target is " << form.getTarget() << ".";
+      << "Target is " << form.getTarget() << " and "
+      << ( form.getExecuted() ? " it was executed. " : " it was not executed. " );
   return out;
 }

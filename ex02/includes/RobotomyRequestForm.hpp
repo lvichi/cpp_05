@@ -15,6 +15,7 @@
 #include "AForm.hpp"
 #include <unistd.h>
 #include <cstdlib>
+#include <ctime>
 
 #define ROBOTOMY_SIGN 72
 #define ROBOTOMY_EXEC 45
@@ -23,6 +24,7 @@ class RobotomyRequestForm : public AForm
 {
   private:
     const std::string   _target;
+    mutable bool        _executed;
 
     // Helpers
     void executeAction() const;
@@ -36,12 +38,19 @@ class RobotomyRequestForm : public AForm
 
     // Getters
     const std::string& getTarget() const;
+    bool getExecuted() const;
 
     // Methods
     void execute(const Bureaucrat& executor) const;
 
     // Exceptions
     class FormNotSignedException : public std::exception
+    {
+      public:
+        const char* what() const throw();
+    };
+
+    class FormAlreadyExecutedException : public std::exception
     {
       public:
         const char* what() const throw();

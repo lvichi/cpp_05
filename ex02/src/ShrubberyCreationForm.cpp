@@ -16,12 +16,12 @@
 // Constructor
 ShrubberyCreationForm::ShrubberyCreationForm( const std::string& target )
   : AForm( "ShrubberyCreationForm", SHRUBBERY_SIGN, SHRUBBERY_EXEC ),
-  _target( target ) {}
+  _target( target ), _executed( false ) {}
 
 // Copy Constructor
 ShrubberyCreationForm::ShrubberyCreationForm(
   const ShrubberyCreationForm& original )
-  : AForm( original ), _target( original._target ) {}
+  : AForm( original ), _target( original._target ), _executed( false ) {}
 
 // Assignment Constructor
 ShrubberyCreationForm& ShrubberyCreationForm::operator=(
@@ -29,6 +29,7 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(
 {
   if ( this != &original ) {
     AForm::operator=( original );
+    _executed = original._executed;
   }
   return *this;
 }
@@ -38,6 +39,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
 // Getters
 const std::string& ShrubberyCreationForm::getTarget() const { return _target; }
+bool ShrubberyCreationForm::getExecuted() const { return _executed; }
 
 // Methods
 void ShrubberyCreationForm::executeAction() const
@@ -62,14 +64,21 @@ void ShrubberyCreationForm::execute( const Bureaucrat& executor ) const
 {
   if ( !getSigned() )
     throw FormNotSignedException();
+  if ( getExecuted() )
+    throw FormAlreadyExecutedException();
   if ( executor.getGrade() > getExecGrade() )
     throw GradeTooLowException();
   executeAction();
+  _executed = true;
 }
 
 // Exception
 const char* ShrubberyCreationForm::FormNotSignedException::what() const throw() {
   return "Form not signed.";
+}
+
+const char* ShrubberyCreationForm::FormAlreadyExecutedException::what() const throw() {
+  return "Form already executed.";
 }
 
 // Overload insertion operator
@@ -79,6 +88,7 @@ std::ostream& operator<<( std::ostream& out, const ShrubberyCreationForm& form )
       << ( form.getSigned() ? " is signed. " : " is not signed. " )
       << "Sign grade is " << form.getSignGrade() << ". "
       << "Execute grade is " << form.getExecGrade() << ". "
-      << "Target is " << form.getTarget() << ".";
+      << "Target is " << form.getTarget() << "."
+      << ( form.getExecuted() ? " it was executed. " : " it was not executed. " );
   return out;
 }
