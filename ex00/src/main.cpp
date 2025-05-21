@@ -102,13 +102,13 @@ int main() {
 // Format print information about a Bureacrat
 void bureaucraftPrint(const Bureaucrat& a)
 {
-  std::cout << a << std::endl << std::endl;
+  std::cout << a << std::endl;
 }
 
 // Format print the caught error
 void errorPrint(const std::exception& error)
 {
-  std::cerr << "Caught exception: " << error.what() << std::endl << std::endl;
+  std::cerr << "Caught exception: " << error.what() << std::endl;
 }
 
 // Wait between tests

@@ -15,6 +15,7 @@
 #include <iostream>
 #include <string>
 #include <exception>
+#include "Form.hpp"
 
 #define MAX_GRADE 1
 #define MIN_GRADE 150
@@ -45,6 +46,7 @@ class Bureaucrat
     // Methods
     void incrementGrade();
     void decrementGrade();
+    void signForm( Form& form );
 
     // Exceptions Classes
     class GradeTooHighException : public std::exception
@@ -61,4 +63,4 @@ class Bureaucrat
 };
 
 // Overload insertion operator
-std::ostream& operator<<( std::ostream& os, const Bureaucrat& b );
+std::ostream& operator<<( std::ostream& out, const Bureaucrat& bureaucrat );

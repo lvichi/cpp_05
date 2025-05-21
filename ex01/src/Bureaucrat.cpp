@@ -66,6 +66,18 @@ void Bureaucrat::decrementGrade()
   _grade++;
 }
 
+void Bureaucrat::signForm( Form& form )
+{
+  try {
+    form.beSigned( *this );
+    std::cout << _name << " signed " << form.getName() << std::endl;
+  } catch (std::exception& error) {
+    std::cerr << _name << " couldn’t sign ";
+    std::cerr << form.getName() << " because ";
+    std::cerr << error.what() << std::endl;
+  }
+}
+
 // Helpers
 void Bureaucrat::checkGrade( int grade ) {
   if ( grade < MAX_GRADE )
@@ -86,9 +98,10 @@ const char* Bureaucrat::GradeTooLowException::what() const throw()
 }
 
 // Overload insertion operator
-std::ostream& operator<<( std::ostream& os, const Bureaucrat& b )
+std::ostream& operator<<( std::ostream& out, const Bureaucrat& bureaucrat )
 {
-  os << b.getName() << ", bureaucrat grade " << b.getGrade() << '.';
-  return os;
+  out << bureaucrat.getName();
+  out << ", bureaucrat grade " << bureaucrat.getGrade() << '.';
+  return out;
 }
 
