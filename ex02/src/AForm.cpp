@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.cpp                                     :+:      :+:    :+:   */
+/*   AForm.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lvichi <lvichi@student.42porto.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Form.hpp"
+#include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
 // Constructor
-Form::Form( const std::string& name, int sign_grade, int exec_grade )
+AForm::AForm( const std::string& name, int sign_grade, int exec_grade )
   : _name( name ), _signed( false ), _sign_grade( sign_grade ),
   _exec_grade( exec_grade )
 {
@@ -23,12 +23,12 @@ Form::Form( const std::string& name, int sign_grade, int exec_grade )
 }
 
 // Copy Constructor
-Form::Form( const Form& original )
+AForm::AForm( const AForm& original )
   : _name( original._name ), _signed( original._signed ),
   _sign_grade( original._sign_grade ), _exec_grade( original._exec_grade ) {}
 
 // Assignment Constructor
-Form& Form::operator=( const Form& original )
+AForm& AForm::operator=( const AForm& original )
 {
   if ( this != &original ) {
     _signed = original._signed;
@@ -37,19 +37,19 @@ Form& Form::operator=( const Form& original )
 }
 
 // Destructor
-Form::~Form() {}
+AForm::~AForm() {}
 
 // Getters
-const std::string& Form::getName() const { return _name; }
+const std::string& AForm::getName() const { return _name; }
 
-bool Form::getSigned() const { return _signed; }
+bool AForm::getSigned() const { return _signed; }
 
-int Form::getSignGrade() const { return _sign_grade; }
+int AForm::getSignGrade() const { return _sign_grade; }
 
-int Form::getExecGrade() const { return _exec_grade; }
+int AForm::getExecGrade() const { return _exec_grade; }
 
 // Methods
-void Form::beSigned( const Bureaucrat& agent )
+void AForm::beSigned( const Bureaucrat& agent )
 {
   if ( _signed )
     throw AlreadySignedException();
@@ -58,7 +58,7 @@ void Form::beSigned( const Bureaucrat& agent )
 }
 
 // Helpers
-void Form::checkGrade( int grade, int min_grade ) {
+void AForm::checkGrade( int grade, int min_grade ) {
   if ( grade < MAX_GRADE )
     throw GradeTooHighException();
   if ( grade > min_grade )
@@ -66,23 +66,23 @@ void Form::checkGrade( int grade, int min_grade ) {
 }
 
 // Exceptions
-const char* Form::GradeTooHighException::what() const throw()
+const char* AForm::GradeTooHighException::what() const throw()
 {
   return "Grade Too High.";
 }
 
-const char* Form::GradeTooLowException::what() const throw()
+const char* AForm::GradeTooLowException::what() const throw()
 {
   return "Grade Too Low.";
 }
 
-const char* Form::AlreadySignedException::what() const throw()
+const char* AForm::AlreadySignedException::what() const throw()
 {
   return "Already Signed.";
 }
 
 // Overload insertion operator
-std::ostream& operator<<( std::ostream& out, const Form& form )
+std::ostream& operator<<( std::ostream& out, const AForm& form )
 {
   out << "Form " << form.getName();
   if ( form.getSigned() ) {

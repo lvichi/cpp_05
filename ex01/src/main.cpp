@@ -67,6 +67,18 @@ int main() {
   formPrint(form_g);
   wait();
 
+  std::cout << "=== Form Sign Fail (Already signed) ===" << std::endl;
+  Bureaucrat greg("Greg", 40);
+  bureaucraftPrint(greg);
+  Form form_h("H", 50, 120);
+  formPrint(form_h);
+  greg.signForm(form_h);
+  formPrint(form_h);
+  Bureaucrat kelly("Kelly", 20);
+  bureaucraftPrint(kelly);
+  kelly.signForm(form_h);
+  wait();
+
   return 0;
 }
 

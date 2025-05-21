@@ -21,7 +21,7 @@
 
 class Bureaucrat;
 
-class Form
+class AForm
 {
   private:
     const std::string     _name;
@@ -34,10 +34,10 @@ class Form
 
   public:
     // Canonical form
-    Form( const std::string& name, int _sign_grade, int _exec_grade );
-    Form( const Form& original );
-    Form& operator=( const Form& original );
-    ~Form();
+    AForm( const std::string& name, int _sign_grade, int _exec_grade );
+    AForm( const AForm& original );
+    AForm& operator=( const AForm& original );
+    virtual ~AForm();
 
     // Getters
     const std::string& getName() const;
@@ -47,6 +47,7 @@ class Form
 
     // Methods
     void beSigned( const Bureaucrat& agent );
+    virtual void execute(const Bureaucrat& executor) const = 0;
 
     // Exceptions Classes
     class GradeTooHighException : public std::exception
@@ -69,4 +70,4 @@ class Form
 };
 
 // Overload insertion operator
-std::ostream& operator<<( std::ostream& out, const Form& form );
+std::ostream& operator<<( std::ostream& out, const AForm& form );

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Form.hpp                                     :+:      :+:    :+:   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lvichi <lvichi@student.42porto.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,58 +15,53 @@
 #include <iostream>
 #include <string>
 #include <exception>
+#include "AForm.hpp"
 
 #define MAX_GRADE 1
 #define MIN_GRADE 150
 
-class Bureaucrat;
-
-class Form
+class Bureaucrat
 {
   private:
     const std::string     _name;
-    bool                  _signed;
-    const int             _sign_grade;
-    const int             _exec_grade;
+    int                   _grade;
 
     // Helpers
-    void checkGrade( int grade, int min_grade );
+    void checkGrade( int grade );
 
   public:
     // Canonical form
-    Form( const std::string& name, int _sign_grade, int _exec_grade );
-    Form( const Form& original );
-    Form& operator=( const Form& original );
-    ~Form();
+    Bureaucrat( const std::string& name, int grade );
+    Bureaucrat( const Bureaucrat& original );
+    Bureaucrat&           operator=( const Bureaucrat& original );
+    ~Bureaucrat();
+
+    // Setters
+    void setGrade( int grade );
 
     // Getters
-    const std::string& getName() const;
-    bool getSigned() const;
-    int getSignGrade() const;
-    int getExecGrade() const;
+    const std::string&    getName() const;
+    int                   getGrade() const;
 
     // Methods
-    void beSigned( const Bureaucrat& agent );
+    void incrementGrade();
+    void decrementGrade();
+    void signForm( AForm& form );
+    void executeForm(AForm const & form) const;
 
     // Exceptions Classes
     class GradeTooHighException : public std::exception
     {
       public:
-        const char* what() const throw();
+        const char*         what() const throw();
     };
 
     class GradeTooLowException : public std::exception
     {
       public:
-        const char* what() const throw();
-    };
-
-    class AlreadySignedException : public std::exception
-    {
-      public:
-        const char* what() const throw();
+        const char*         what() const throw();
     };
 };
 
 // Overload insertion operator
-std::ostream& operator<<( std::ostream& out, const Form& form );
+std::ostream& operator<<( std::ostream& out, const Bureaucrat& bureaucrat );
