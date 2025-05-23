@@ -12,7 +12,7 @@
 
 #include "Intern.hpp"
 
-// Defining a functiom for each form
+// Defining a function for each form
 AForm* createShrubbery( const std::string& target )
 {
   return new ShrubberyCreationForm( target );
